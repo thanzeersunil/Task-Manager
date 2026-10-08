@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task details - Task Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark px-3">
+        <a href="/dashboard/" class="navbar-brand">Task Manager</a>
+        <button class="btn btn-sm btn-light" onclick="logout()">Logout</button>
+    </nav>
+
+    <div class="container my-4" style="max-width: 600px;">
+        <div class="card p-4">
+            <div id="message"></div>
+            <div id="taskDetails"></div>
+            <div class="mt-3">
+                <a id="editLink" class="btn btn-main">Edit task</a>
+                <a href="/dashboard/" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        requireLogin();
+        const taskId = getUrlParam("id");
+        document.getElementById("editLink").href = "/task-form/?id=" + taskId;
+
+        async function loadTask() {
+            const result = await apiRequest("/api/tasks/" + taskId + "/");
+            if (!result.ok) {
+                showMessage("message", getErrorText(result.data));
+                return;
+            }
+            const task = result.data;
+            document.getElementById("taskDetails").innerHTML = `
+                <h3>${escapeHtml(task.title)}</h3>
+                <p class="description-text">${escapeHtml(task.description) || "<i class='text-muted'>No description</i>"}</p>
+                <table class="table">
+                    <tr><th>Status</th><td>${statusBadge(task.status)}</td></tr>
+                    <tr><th>Priority</th><td>${priorityBadge(task.priority)}</td></tr>
+                    <tr><th>Due date</th><td>${task.due_date || "-"}</td></tr>
+                    <tr><th>Created</th><td>${task.created_date}</td></tr>
+                </table>`;
+        }
+
+        loadTask();
+    </script>
+</body>
+</html>

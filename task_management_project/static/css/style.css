@@ -1,0 +1,32 @@
+body {
+    background-color: #eef2f0;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #1f4e45;
+}
+
+.auth-box {
+    max-width: 400px;
+    margin: 80px auto;
+}
+
+.btn-main {
+    background-color: #1f4e45;
+    color: white;
+}
+
+.btn-main:hover {
+    background-color: #163a33;
+    color: white;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.description-text {
+    white-space: pre-wrap;
+}
